@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:showave/features/home/home.dart';
 
 void main() {
   runApp(ShopwaveApp());
@@ -15,7 +16,7 @@ class ShopwaveApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: "Shopwave",
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: Scaffold(body: Center(child: Text("NEGGERS"))),
+        home: Home(),
       ),
     );
   }
