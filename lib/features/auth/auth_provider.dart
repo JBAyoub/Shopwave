@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,4 +31,41 @@ class AuthNotifier extends Notifier<AuthState> {
       state = AuthStateError(message: e.toString());
     }
   }
+
+  Future<void> _login(String email, String password) async {
+    state = AuthStateLoading();
+    final dio = ref.read(dioProvider);
+    try {
+      final response = await dio.post(
+        AppConstants.loginRoute,
+        data: {'email': email, 'password': password},
+      );
+      final user = User.fromJson(response.data['user'] as Map<String, dynamic>);
+      await _saveSession(user);
+      state = AuthStateAuthenticated(user: user);
+    } on DioException catch (e) {
+      final message =
+          (e.response?.data['message'] as Map<String, dynamic>?)?['message']
+              as String? ??
+          _httpErrorMessage(e.response?.statusCode);
+      state = AuthStateError(message: message);
+    }
+  }
+
+  Future<void> _saveSession(User user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(AppConstants.tokenKey, user.token);
+    await prefs.setString(AppConstants.userIdKey, user.id);
+    await prefs.setString("user_data", jsonEncode(user.toJson()));
+  }
+
+  String _httpErrorMessage(int? code) => switch (code) {
+    400 => 'Bad request. Please check your input.',
+    401 => 'Incorrect Email or Password. Please check your credentials.',
+    403 => 'Forbidden. You do not have access.',
+    429 => 'Too many requests. Try again later.',
+    404 => 'Not found. The resource does not exist.',
+    500 => 'Server error. Please try again later.',
+    _ => 'An unexpected error occurred. Please try again.',
+  };
 }
