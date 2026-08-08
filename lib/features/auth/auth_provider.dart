@@ -26,13 +26,13 @@ class AuthNotifier extends Notifier<AuthState> {
         options: Options(headers: {'Authorization': 'Bearer $savedToken'}),
       );
       final user = User.fromJson(response.data['user'] as Map<String, dynamic>);
-      state = AuthStateAuthenticated(user: user);
+      state = AuthStateAuthenticated(user);
     } catch (e) {
       state = AuthStateError(message: e.toString());
     }
   }
 
-  Future<void> _login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     state = AuthStateLoading();
     final dio = ref.read(dioProvider);
     try {
@@ -42,7 +42,7 @@ class AuthNotifier extends Notifier<AuthState> {
       );
       final user = User.fromJson(response.data['user'] as Map<String, dynamic>);
       await _saveSession(user);
-      state = AuthStateAuthenticated(user: user);
+      state = AuthStateAuthenticated(user);
     } on DioException catch (e) {
       final message =
           (e.response?.data['message'] as Map<String, dynamic>?)?['message']
@@ -81,3 +81,7 @@ class AuthNotifier extends Notifier<AuthState> {
     _ => 'An unexpected error occurred. Please try again.',
   };
 }
+
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);

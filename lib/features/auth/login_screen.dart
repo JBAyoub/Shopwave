@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:showave/features/auth/widgets/login_text_widget.dart';
+import 'package:showave/features/auth/auth_state.dart';
+import 'auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -13,71 +11,123 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
-  build(BuildContext context) {
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       body: SafeArea(
-        bottom: false,
-        left: false,
-        right: false,
-        child: Container(
-          isAntiAlias: true,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 0.2,
-              color: const Color.fromARGB(255, 226, 226, 223),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: switch (authState) {
+            AuthStateInitial() => _buildLoginForm(context, isLoading: false),
+            AuthStateError(:final message) => _buildLoginForm(
+              context,
+              isLoading: false,
+              errorMessage: message,
             ),
-            borderRadius: BorderRadius.circular(16),
-            color: const Color.fromARGB(255, 193, 188, 162),
-          ),
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 100),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-            child: SizedBox(
-              width: double.maxFinite,
-              height: 500,
-              child: Column(
-                mainAxisSize: .max,
-                mainAxisAlignment: .center,
-                crossAxisAlignment: .center,
-                spacing: 15,
-                children: [
-                  const Text(
-                    softWrap: true,
-                    "ShopWave",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 41, 41, 41),
-                      fontSize: 36,
-                      fontWeight: .bold,
-                      letterSpacing: 0,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  LoginFieldWidget(
-                    placeHolderText: "email@example.com",
-                    hidden: false,
-                    icon: Icon(Icons.alternate_email_sharp),
-                  ),
-                  LoginFieldWidget(
-                    placeHolderText: "**********",
-                    hidden: true,
-                    icon: Icon(Icons.shield_sharp),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: .maxFinite,
-                    height: 40,
-                    child: FilledButton(
-                      onPressed: () {},
-                      child: Text("Login", style: TextStyle(fontSize: 26)),
-                    ),
-                  ),
-                ],
-              ),
+            AuthStateLoading() => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
+            AuthStateAuthenticated() => const Center(child: SizedBox.shrink()),
+          },
         ),
       ),
     );
+  }
+
+  Widget _buildLoginForm(
+    BuildContext context, {
+    required bool isLoading,
+    String? errorMessage,
+  }) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Shopwave',
+            style: Theme.of(context).textTheme.headlineMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 32),
+          if (errorMessage != null) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.errorContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                errorMessage,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+          TextFormField(
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(labelText: 'Email'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                return 'Please enter a valid email';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            controller: _passwordController,
+            obscureText: true,
+            decoration: const InputDecoration(labelText: 'Password'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your password';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 32),
+          ElevatedButton(
+            onPressed: isLoading ? null : _onLoginPressed,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text('Login', style: TextStyle(fontSize: 16)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onLoginPressed() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    ref.read(authProvider.notifier).login(email, password);
   }
 }

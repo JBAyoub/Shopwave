@@ -6,7 +6,7 @@ sealed class AuthState {
 
 class AuthStateAuthenticated extends AuthState {
   final User user;
-  const AuthStateAuthenticated({required this.user});
+  const AuthStateAuthenticated(this.user);
 }
 
 class AuthStateInitial extends AuthState {
@@ -18,6 +18,6 @@ class AuthStateLoading extends AuthState {
 }
 
 class AuthStateError extends AuthState {
-  final String message;
-  const AuthStateError({required this.message});
+  final String? message;
+  const AuthStateError({this.message});
 }
