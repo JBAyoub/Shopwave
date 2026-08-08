@@ -19,20 +19,13 @@ class User {
       token: json['token'],
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'email': email};
-  }
-
+  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'email': email};
   @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is User && runtimeType == other.runtimeType && id == other.id;
-  }
-
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is User && runtimeType == other.runtimeType && id == other.id;
   @override
   int get hashCode => id.hashCode;
-
   @override
   String toString() =>
       "User(id: $id, name: $name, email: $email, token: $token)";
