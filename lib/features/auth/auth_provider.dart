@@ -52,7 +52,7 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
-  Future<void> _logout() async {
+  Future<void> logout() async {
     await _clearSession();
     state = AuthStateInitial();
   }
