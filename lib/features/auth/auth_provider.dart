@@ -52,6 +52,18 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
+  Future<void> _logout() async {
+    await _clearSession();
+    state = AuthStateInitial();
+  }
+
+  Future<void> _clearSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(AppConstants.tokenKey);
+    await prefs.remove(AppConstants.userIdKey);
+    await prefs.remove("user_data");
+  }
+
   Future<void> _saveSession(User user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(AppConstants.tokenKey, user.token);
