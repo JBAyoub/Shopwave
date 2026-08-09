@@ -28,7 +28,7 @@ class AuthNotifier extends Notifier<AuthState> {
       final user = User.fromJson(response.data['user'] as Map<String, dynamic>);
       state = AuthStateAuthenticated(user);
     } catch (e) {
-      state = AuthStateError(message: e.toString());
+      state = AuthStateError(e.toString());
     }
   }
 
@@ -48,7 +48,7 @@ class AuthNotifier extends Notifier<AuthState> {
           (e.response?.data['message'] as Map<String, dynamic>?)?['message']
               as String? ??
           _httpErrorMessage(e.response?.statusCode);
-      state = AuthStateError(message: message);
+      state = AuthStateError(message);
     }
   }
 

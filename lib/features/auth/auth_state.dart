@@ -18,6 +18,6 @@ class AuthStateLoading extends AuthState {
 }
 
 class AuthStateError extends AuthState {
-  final String? message;
-  const AuthStateError({this.message});
+  final String message;
+  const AuthStateError(this.message);
 }
