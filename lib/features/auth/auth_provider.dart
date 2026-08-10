@@ -33,28 +33,35 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<void> login(String email, String password) async {
-    state = AuthStateLoading();
-    final dio = ref.read(dioProvider);
+    state = const AuthStateLoading();
     try {
+      final dio = ref.read(dioProvider);
       final response = await dio.post(
         AppConstants.loginRoute,
-        data: {'email': email, 'password': password},
+        data: {'email': email.trim(), 'password': password},
       );
-      final user = User.fromJson(response.data['user'] as Map<String, dynamic>);
+      final user = User.fromJson(response.data as Map<String, dynamic>);
       await _saveSession(user);
       state = AuthStateAuthenticated(user);
     } on DioException catch (e) {
-      final message =
-          (e.response?.data['message'] as Map<String, dynamic>?)?['message']
-              as String? ??
-          _httpErrorMessage(e.response?.statusCode);
+      final data = e.response?.data;
+
+      final message = data is Map<String, dynamic>
+          ? data['message'] as String? ??
+                _httpErrorMessage(e.response?.statusCode)
+          : data is String
+          ? data
+          : _httpErrorMessage(e.response?.statusCode);
       state = AuthStateError(message);
+    } catch (_) {
+      state = const AuthStateError('An unexpected error occurred.');
     }
   }
 
   Future<void> logout() async {
     await _clearSession();
     state = AuthStateInitial();
+    ref.invalidate(authProvider);
   }
 
   Future<void> _clearSession() async {
