@@ -1,7 +1,7 @@
 class AppConstants {
   AppConstants._();
   // static final baseURL = "https://api.shopwave.com"; //prod
-  static final baseURL = 'http://10.0.2.2:8080'; //dev
+  static final baseURL = 'http://10.0.2.2:8082'; //dev
   static const Duration connectionTimeout = Duration(seconds: 10);
   static const Duration receiveTimeout = Duration(seconds: 10);
 
