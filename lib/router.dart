@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:showave/features/auth/auth_provider.dart';
 import 'package:showave/features/auth/auth_state.dart';
 import 'package:showave/features/auth/login_screen.dart';
+import 'package:showave/features/product/products_screen.dart';
 
 class _AuthChangeNotifier extends ChangeNotifier {
   _AuthChangeNotifier(Ref ref) {
@@ -30,6 +31,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: '/products',
+        builder: (context, state) => const ProductsScreen(),
+      ),
     ],
   );
 });
