@@ -17,12 +17,12 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      price: json['price'],
-      imageURL: json['imageURL'],
-      catergory: json['catergory'],
+      id: (json['id'] as int).toString(),
+      name: json['name'] as String,
+      description: json['description'] as String,
+      price: json['price'] as double,
+      imageURL: json['imageUrl'] as String,
+      catergory: json['category'] as String,
     );
   }
 
