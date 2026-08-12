@@ -65,8 +65,6 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           },
 
                           errorWidget: (context, url, error) {
-                            print('IMAGE URL: $url');
-                            print('IMAGE ERROR: $error');
                             return const Center(
                               child: Icon(
                                 Icons.image_not_supported_outlined,
