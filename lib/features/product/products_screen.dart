@@ -77,7 +77,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           data[index].name,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
 
@@ -88,6 +90,19 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontSize: 25,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Add to cart",
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                           ),
                         ),
                       ),
