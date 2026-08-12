@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:showave/features/product/product_provider.dart';
@@ -55,9 +56,24 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                       SizedBox(
                         height: 100,
                         width: double.infinity,
-                        child: Image.network(
-                          data[index].imageURL,
+                        child: CachedNetworkImage(
+                          imageUrl: data[index].imageURL,
                           fit: BoxFit.cover,
+
+                          placeholder: (context, url) {
+                            return const Center(child: Icon(Icons.image));
+                          },
+
+                          errorWidget: (context, url, error) {
+                            print('IMAGE URL: $url');
+                            print('IMAGE ERROR: $error');
+                            return const Center(
+                              child: Icon(
+                                Icons.image_not_supported_outlined,
+                                size: 40,
+                              ),
+                            );
+                          },
                         ),
                       ),
                       SizedBox(height: 10),
