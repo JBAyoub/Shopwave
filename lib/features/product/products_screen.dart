@@ -34,125 +34,133 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: productsState.when(
-          data: (data) {
-            return GridView.builder(
-              itemCount: data.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.65,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                return Card(
-                  elevation: 5,
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    spacing: 5,
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        width: double.infinity,
-                        child: CachedNetworkImage(
-                          imageUrl: data[index].imageURL,
-                          fit: BoxFit.cover,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(productsProvider);
+          await ref.read(productsProvider.future);
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: productsState.when(
+            data: (data) {
+              return GridView.builder(
+                itemCount: data.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      spacing: 5,
+                      children: [
+                        SizedBox(
+                          height: 100,
+                          width: double.infinity,
+                          child: CachedNetworkImage(
+                            imageUrl: data[index].imageURL,
+                            fit: BoxFit.cover,
 
-                          placeholder: (context, url) {
-                            return const Center(child: Icon(Icons.image));
-                          },
+                            placeholder: (context, url) {
+                              return const Center(child: Icon(Icons.image));
+                            },
 
-                          errorWidget: (context, url, error) {
-                            return const Center(
-                              child: Icon(
-                                Icons.image_not_supported_outlined,
-                                size: 40,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          data[index].catergory,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).colorScheme.primary,
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          data[index].name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          '\$${data[index].price}',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 25,
+                            errorWidget: (context, url, error) {
+                              return const Center(
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 40,
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: ElevatedButton(
-                          onPressed: () {},
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            "Add to cart",
-                            style: Theme.of(context).textTheme.bodyMedium
+                            data[index].catergory,
+                            style: Theme.of(context).textTheme.bodySmall
                                 ?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
                                 ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            data[index].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
 
-          error: (error, stackTrace) {
-            return Center(
-              child: Column(
-                spacing: 20,
-                mainAxisAlignment: .center,
-                crossAxisAlignment: .center,
-                children: [
-                  const Icon(
-                    Icons.not_interested_sharp,
-                    size: 50,
-                    color: Color.fromARGB(199, 235, 57, 51),
-                  ),
-                  Text(
-                    "An Error Has Occured.",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  Text(
-                    error.toString(),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            );
-          },
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            '\$${data[index].price}',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Add to cart",
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
 
-          loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stackTrace) {
+              return Center(
+                child: Column(
+                  spacing: 20,
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: .center,
+                  children: [
+                    const Icon(
+                      Icons.not_interested_sharp,
+                      size: 50,
+                      color: Color.fromARGB(199, 235, 57, 51),
+                    ),
+                    Text(
+                      "An Error Has Occured.",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      error.toString(),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              );
+            },
+
+            loading: () => const Center(child: CircularProgressIndicator()),
+          ),
         ),
       ),
     );
