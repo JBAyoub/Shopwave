@@ -51,7 +51,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  return ProductCard(product: data[index]);
+                  return ProductCard(product: data[index], onAddToCard: () {});
                 },
               );
             },
