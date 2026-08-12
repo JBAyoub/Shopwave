@@ -15,7 +15,10 @@ class ProductsNotifier extends AsyncNotifier<List<Product>> {
         .toList();
   }
 
-  Future<void> referesh() async {}
+  Future<void> referesh() async {
+    ref.invalidateSelf();
+    await future;
+  }
 }
 
 final productsProvider = AsyncNotifierProvider<ProductsNotifier, List<Product>>(
