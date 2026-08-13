@@ -17,8 +17,13 @@ class CartItem {
       identical(this, other) ||
       other is CartItem &&
           runtimeType == other.runtimeType &&
-          product.id == other.product.id;
+          product.id == other.product.id &&
+          quantity == other.quantity;
 
   @override
-  int get hashCode => product.id.hashCode;
+  int get hashCode => Object.hash(product.id, quantity);
+
+  @override
+  String toString() =>
+      "Cart Item: ${product.name} | quantity: $quantity | subtotal: $subtotal";
 }
