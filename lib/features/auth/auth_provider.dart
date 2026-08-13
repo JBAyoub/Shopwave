@@ -53,9 +53,7 @@ class AuthNotifier extends Notifier<AuthState> {
           ? data
           : _httpErrorMessage(e.response?.statusCode);
       state = AuthStateError(message);
-    } catch (e, stackTrace) {
-      print('LOGIN ERROR: $e');
-      print(stackTrace);
+    } catch (e) {
       state = const AuthStateError('An unexpected error occurred.');
     }
   }
