@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:showave/models/product.dart';
+import 'package:showave/router.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Product product;
   final VoidCallback onAddToCard;
   const ProductCard({
@@ -12,9 +14,12 @@ class ProductCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        final router = ref.read(routerProvider);
+        router.go("/product/${product.id}");
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(16),

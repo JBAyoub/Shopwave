@@ -11,7 +11,7 @@ class AppConstants {
   static const String logoutRoute = "/logout";
   static const String homeRoute = "/home";
   static const String productsRoute = "/products";
-  static const String productRoute = "/product";
+  static const String productRoute = "/products";
   static const String orderRoute = "/orders";
   static const String profileRoute = "/profile";
 }
