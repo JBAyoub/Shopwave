@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:showave/features/product/product_provider.dart';
 import 'package:showave/features/product/widgets/product_card.dart';
 
@@ -29,7 +30,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           ),
           IconButton(
             iconSize: 25,
-            onPressed: () {},
+            onPressed: () {
+              context.go("/cart");
+            },
             icon: const Icon(Icons.shopping_cart_outlined),
           ),
         ],

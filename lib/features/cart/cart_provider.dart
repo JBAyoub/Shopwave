@@ -9,13 +9,21 @@ class CartNotifier extends Notifier<List<CartItem>> {
   }
 
   void addItem(Product product) {
-    final CartItem cartItem = state.firstWhere(
-      (element) => element.product.id == product.id,
+    final existingIndex = state.indexWhere(
+      (item) => item.product.id == product.id,
     );
-    final bool exists = state.contains(cartItem);
-    state = exists
-        ? state = [...state, cartItem.copyWith(cartItem.quantity + 1)]
-        : [...state, CartItem(product: product)];
+
+    if (existingIndex >= 0) {
+      state = [
+        for (int i = 0; i < state.length; i++)
+          if (i == existingIndex)
+            state[i].copyWith(state[i].quantity + 1)
+          else
+            state[i],
+      ];
+    } else {
+      state = [...state, CartItem(product: product)];
+    }
   }
 
   void removeItem(Product product) {

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showave/features/cart/cart_provider.dart';
 import 'package:showave/features/product/product_details_provider.dart';
 import 'package:showave/features/product/product_provider.dart';
 
@@ -13,9 +14,10 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(productProvider(productId));
     final cachedProduct = ref
-        .watch(productsProvider)
+        .read(productsProvider)
         .value
-        ?.firstWhere((p) => p.id == product.value?.id);
+        ?.where((p) => p.id == productId.toString())
+        .firstOrNull;
 
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +123,7 @@ class ProductDetailScreen extends ConsumerWidget {
                         height: 80,
                         child: ElevatedButton(
                           onPressed: () {
+                            ref.read(cartProvider.notifier).addItem(data);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("${data.name} Added to Cart!"),

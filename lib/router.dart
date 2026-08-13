@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:showave/features/auth/auth_provider.dart';
 import 'package:showave/features/auth/auth_state.dart';
 import 'package:showave/features/auth/login_screen.dart';
+import 'package:showave/features/cart/cart_screen.dart';
 import 'package:showave/features/product/product_detail_screen.dart';
 import 'package:showave/features/product/products_screen.dart';
 
@@ -41,6 +42,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             ProductDetailScreen(productId: state.pathParameters["id"] ?? ""),
       ),
+      GoRoute(path: '/cart', builder: (context, state) => const CartScreen()),
     ],
   );
 });
