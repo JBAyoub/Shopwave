@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:showave/features/product/product_details_provider.dart';
+import 'package:showave/features/product/product_provider.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   final String productId;
@@ -11,6 +12,11 @@ class ProductDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(productProvider(productId));
+    final cachedProduct = ref
+        .watch(productsProvider)
+        .value
+        ?.firstWhere((p) => p.id == product.value?.id);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -18,11 +24,11 @@ class ProductDetailScreen extends ConsumerWidget {
         titleSpacing: 10,
         leading: BackButton(
           onPressed: () {
-            context.go("/products");
+            context.pop();
           },
         ),
         title: Text(
-          "Product Details",
+          cachedProduct?.name ?? product.value?.name ?? "Product Details",
           style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
@@ -114,7 +120,13 @@ class ProductDetailScreen extends ConsumerWidget {
                         width: .infinity,
                         height: 80,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("${data.name} Added to Cart!"),
+                              ),
+                            );
+                          },
                           child: Text(
                             "Add to Cart",
                             style: Theme.of(context).textTheme.bodyLarge,

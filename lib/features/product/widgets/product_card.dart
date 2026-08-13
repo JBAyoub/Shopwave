@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:showave/models/product.dart';
-import 'package:showave/router.dart';
 
 class ProductCard extends ConsumerWidget {
   final Product product;
@@ -17,8 +17,7 @@ class ProductCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
-        final router = ref.read(routerProvider);
-        router.go("/product/${product.id}");
+        context.push("/product/${product.id}");
       },
       child: Card(
         shape: RoundedRectangleBorder(
