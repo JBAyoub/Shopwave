@@ -31,7 +31,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
           IconButton(
             iconSize: 25,
             onPressed: () {
-              context.go("/cart");
+              context.push("/cart");
             },
             icon: const Icon(Icons.shopping_cart_outlined),
           ),
