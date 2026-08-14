@@ -23,9 +23,7 @@ class CartScreen extends ConsumerWidget {
         title: Text(itemCount == 0 ? 'Cart' : 'Cart ($itemCount items)'),
       ),
       body: cartItems.isEmpty
-          // ── Empty state ──────────────────────────────────
           ? _EmptyCartView()
-          // ── Items present ────────────────────────────────
           : Column(
               children: [
                 Expanded(
@@ -39,7 +37,6 @@ class CartScreen extends ConsumerWidget {
                     },
                   ),
                 ),
-                // ── Summary + checkout ───────────────────────
                 _CartSummary(total: cartTotal, ref: ref),
               ],
             ),
@@ -47,7 +44,6 @@ class CartScreen extends ConsumerWidget {
   }
 }
 
-// ── Empty cart view ───────────────────────────────────────────
 class _EmptyCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -138,7 +134,6 @@ class _CartItemTile extends StatelessWidget {
               ),
             ),
 
-            // ── Quantity controls ─────────────────────────
             Column(
               children: [
                 Row(
@@ -191,7 +186,6 @@ class _CartItemTile extends StatelessWidget {
   }
 }
 
-// ── Small quantity button ─────────────────────────────────────
 class _QtyButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
@@ -231,7 +225,7 @@ class _CartSummary extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(50),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),

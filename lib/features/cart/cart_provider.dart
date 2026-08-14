@@ -56,11 +56,7 @@ final cartCounterProvider = Provider<int>((ref) {
     ),
   );
 });
-
 final cartTotalProvider = Provider<double>((ref) {
-  return ref.watch(
-    cartProvider.select(
-      (items) => items.fold(0, (sum, item) => sum + item.product.price),
-    ),
-  );
+  final items = ref.watch(cartProvider);
+  return items.fold(0.0, (total, item) => total + (item.subtotal));
 });
