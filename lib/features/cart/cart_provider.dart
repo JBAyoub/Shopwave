@@ -48,3 +48,11 @@ class CartNotifier extends Notifier<List<CartItem>> {
 final cartProvider = NotifierProvider<CartNotifier, List<CartItem>>(
   CartNotifier.new,
 );
+
+final cartCounterProvider = Provider<int>((ref) {
+  return ref.watch(
+    cartProvider.select(
+      (items) => items.fold(0, (sum, item) => sum + item.quantity),
+    ),
+  );
+});
