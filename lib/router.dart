@@ -20,7 +20,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final authNotifier = _AuthChangeNotifier(ref);
   final publicRoutes = ['/login'];
   return GoRouter(
-    initialLocation: "/login",
+    initialLocation: "/products",
     refreshListenable: authNotifier,
     redirect: (context, state) {
       final isPublicRoute = publicRoutes.contains(state.matchedLocation);
