@@ -13,7 +13,6 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.watch — subscribe to cart state
     final cartItems = ref.watch(cartProvider);
     final cartTotal = ref.watch(cartTotalProvider);
     final itemCount = ref.watch(cartCounterProvider);
