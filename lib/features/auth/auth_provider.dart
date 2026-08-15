@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showave/core/constants.dart';
 import 'package:showave/core/dio_client.dart';
 import 'package:showave/features/auth/auth_state.dart';
+import 'package:showave/features/cart/cart_provider.dart';
 import 'package:showave/models/user.dart';
 
 class AuthNotifier extends Notifier<AuthState> {
@@ -61,6 +62,7 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> logout() async {
     await _clearSession();
     state = AuthStateInitial();
+    ref.invalidate(cartProvider);
     ref.invalidate(authProvider);
   }
 
