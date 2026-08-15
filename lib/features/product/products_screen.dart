@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showave/features/cart/cart_provider.dart';
 import 'package:showave/features/product/product_provider.dart';
 import 'package:showave/features/product/widgets/product_card.dart';
 
@@ -24,16 +25,41 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            iconSize: 25,
+            iconSize: 20,
             onPressed: () {},
             icon: const Icon(Icons.person_outline_sharp),
           ),
-          IconButton(
-            iconSize: 25,
-            onPressed: () {
-              context.push("/cart");
+          Consumer(
+            builder: (context, ref, child) {
+              final count = ref.watch(cartCounterProvider);
+              return Stack(
+                children: [
+                  IconButton(
+                    iconSize: 20,
+                    onPressed: () {
+                      context.push("/cart");
+                    },
+                    icon: const Icon(Icons.shopping_cart_outlined),
+                  ),
+                  if (count > 0)
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
+                        child: Text(
+                          "$count",
+                          softWrap: true,
+                          textAlign: .justify,
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
-            icon: const Icon(Icons.shopping_cart_outlined),
           ),
         ],
       ),
@@ -54,7 +80,24 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  return ProductCard(product: data[index], onAddToCard: () {});
+                  return ProductCard(
+                    product: data[index],
+                    onAddToCard: () {
+                      ref.read(cartProvider.notifier).addItem(data[index]);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(seconds: 2),
+                          action: SnackBarAction(
+                            label: "View Cart",
+                            onPressed: () => context.go("/cart"),
+                          ),
+                          content: Text(
+                            "${data[index].name} was added to the cart!",
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 },
               );
             },

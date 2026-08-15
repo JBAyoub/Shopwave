@@ -30,7 +30,7 @@ class CartScreen extends ConsumerWidget {
                   child: ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: cartItems.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 8),
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final item = cartItems[index];
                       return _CartItemTile(item: item, ref: ref);
@@ -99,12 +99,12 @@ class _CartItemTile extends StatelessWidget {
                 width: 64,
                 height: 64,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => Container(
+                placeholder: (_, _) => Container(
                   width: 64,
                   height: 64,
                   color: Colors.grey.shade200,
                 ),
-                errorWidget: (_, __, ___) =>
+                errorWidget: (_, _, _) =>
                     const Icon(Icons.image_not_supported, size: 40),
               ),
             ),
@@ -137,7 +137,6 @@ class _CartItemTile extends StatelessWidget {
             Column(
               children: [
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     // Minus button
                     _QtyButton(
