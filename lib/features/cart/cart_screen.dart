@@ -257,7 +257,7 @@ class _CartSummary extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              onPressed: () => context.push('/checkout'),
+              onPressed: () => context.push('/checkout/'),
               child: Text(
                 'Checkout — \$${total.toStringAsFixed(2)}',
                 style: const TextStyle(fontSize: 16),
