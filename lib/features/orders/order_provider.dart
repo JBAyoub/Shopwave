@@ -22,22 +22,18 @@ class OrderNotifier extends AsyncNotifier<List<Order>> {
     final previousOrders = state.asData?.value ?? [];
     state = const AsyncLoading();
     final payload = {
-      'items': summary.items
-          .map(
-            (item) => {
-              'productId': int.parse(item.product.id),
-              'productName': item.product.name,
-              'quantity': item.quantity,
-              'priceAtPurchase': item.product.price,
-            },
-          )
-          .toList(),
-      'total': summary.total,
+      "items": summary.items.map((e) {
+        return {
+          "productId": e.product.id,
+          "productName": e.product.name,
+          'quantity': e.quantity,
+          "priceAtPurchase": e.product.price,
+        };
+      }).toList(),
+      "total": summary.total,
     };
-
-    final dio = ref.read(authenticatedDioProvider);
     late Order newOrder;
-
+    final dio = ref.read(authenticatedDioProvider);
     state = await AsyncValue.guard(() async {
       final response = await dio.post(AppConstants.orderRoute, data: payload);
       newOrder = Order.fromJson(response.data as Map<String, dynamic>);
