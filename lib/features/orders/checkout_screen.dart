@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:showave/features/orders/order_provider.dart';
 import 'package:showave/features/orders/order_summary_provider.dart';
-import 'package:showave/models/order.dart';
 
 class CheckoutScreen extends ConsumerWidget {
   const CheckoutScreen({super.key});
