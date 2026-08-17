@@ -14,7 +14,7 @@ class CheckoutScreen extends ConsumerWidget {
     final isLoading = orderState.isLoading;
     final isReady = ref.watch(isCheckoutReadyProvider);
 
-    ref.listen<AsyncValue<List<Order>>>(orderProvider, (previous, next) {
+    ref.listen(orderProvider, (previous, next) {
       if (previous?.isLoading == true && next.hasValue) {
         final orders = next.value ?? [];
         if (orders.isNotEmpty) {
@@ -169,10 +169,18 @@ class CheckoutScreen extends ConsumerWidget {
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               height: 60,
               width: double.maxFinite,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Place Order - \$${orderSummary.total}"),
-              ),
+              child: isReady
+                  ? ElevatedButton(
+                      onPressed: () {
+                        isLoading
+                            ? null
+                            : ref
+                                  .read(orderProvider.notifier)
+                                  .placeOrder(orderSummary);
+                      },
+                      child: Text("Place Order - \$${orderSummary.total}"),
+                    )
+                  : null,
             ),
           ],
         ),
