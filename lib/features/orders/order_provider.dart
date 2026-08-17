@@ -38,9 +38,9 @@ class OrderNotifier extends AsyncNotifier<List<Order>> {
       final response = await dio.post(AppConstants.orderRoute, data: payload);
       newOrder = Order.fromJson(response.data as Map<String, dynamic>);
       ref.invalidate(cartProvider);
+
       return [newOrder, ...previousOrders];
     });
-
     if (state.hasError) throw state.error!;
     return newOrder;
   }
