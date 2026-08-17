@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showave/features/orders/order_provider.dart';
 import 'package:showave/features/orders/order_summary_provider.dart';
+import 'package:showave/models/order.dart';
 
 class CheckoutScreen extends ConsumerWidget {
   const CheckoutScreen({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderSummary = ref.watch(orderSummaryProvider);
+    final orderState = ref.watch(orderProvider);
+    final isLoading = orderState.isLoading;
+    final isReady = ref.watch(isCheckoutReadyProvider);
+
+    ref.listen<AsyncValue<List<Order>>>(orderProvider, (previous, next) {
+      if (previous?.isLoading == true && next.hasValue) {
+        final orders = next.value ?? [];
+        if (orders.isNotEmpty) {
+          context.push('/order-success/${orders.first.id}');
+        }
+      }
+      if (next.hasError && !next.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: const Color.fromARGB(255, 244, 73, 73),
+            behavior: .floating,
+            content: Text("Order Failed: ${next.error}"),
+          ),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
