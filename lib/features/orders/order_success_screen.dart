@@ -1,108 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class OrderSuccessScreen extends ConsumerWidget {
+class OrderSuccessScreen extends StatelessWidget {
   final String orderId;
+
   const OrderSuccessScreen({super.key, required this.orderId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        automaticallyImplyActions: false,
-        title: Text(
-          "Order confirmed",
-          style: Theme.of(
-            context,
-          ).textTheme.headlineSmall?.copyWith(fontWeight: .bold),
-        ),
+        title: const Text('Order Confirmed'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Center(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: .center,
-            crossAxisAlignment: .center,
-            spacing: 10,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(
-                Icons.check_circle_outline,
-                color: const Color.fromARGB(159, 84, 190, 87),
-                size: 100,
-              ),
-              const Text(
-                "Order Placed!",
-                style: TextStyle(fontSize: 30, fontWeight: .bold),
-              ),
-              Text(
-                "Order #$orderId",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color.fromARGB(100, 0, 0, 0),
-                  fontWeight: .bold,
+              // ── Animated checkmark ────────────────────────
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: 1.0),
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.elasticOut,
+                builder: (context, value, child) =>
+                    Transform.scale(scale: value, child: child),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: .circle,
+                    color: Colors.green.shade50,
+                    border: Border.all(color: Colors.green, width: 2),
+                  ),
+                  child: const Icon(
+                    Icons.check_rounded,
+                    size: 56,
+                    color: Color(0xFF22915a),
+                  ),
                 ),
               ),
+              const SizedBox(height: 28),
+
+              Text(
+                'Order Placed!',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Order #${orderId.toUpperCase()}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+              ),
+              const SizedBox(height: 24),
 
               Card(
-                elevation: 2,
-                borderOnForeground: true,
-                color: const Color(0xFFE4F3E4),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(8),
-                ),
-                clipBehavior: .antiAlias,
+                color: Colors.green.shade50,
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
-                    textBaseline: .alphabetic,
-                    crossAxisAlignment: .center,
-                    mainAxisAlignment: .start,
-                    spacing: 10,
                     children: [
                       const Icon(
                         Icons.email_outlined,
-                        color: Color(0xFF5C9477),
+                        color: Color(0xFF22915a),
+                        size: 20,
                       ),
-                      Expanded(
-                        child: const Text(
-                          overflow: .clip,
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Text(
                           "We'll email you when your order ships.",
-                          style: TextStyle(
-                            fontWeight: .bold,
-                            color: Color(0xFF5C9477),
-                            wordSpacing: 2,
-                            fontSize: 15,
-                          ),
+                          style: TextStyle(color: Color(0xFF22915a)),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: .maxFinite,
-                child: OutlinedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "View Order History",
-                    style: TextStyle(fontWeight: .bold),
-                  ),
-                ),
+              const SizedBox(height: 32),
+
+              OutlinedButton(
+                onPressed: () => context.push('/orders'),
+                child: const Text('View Order History'),
               ),
-              SizedBox(
-                width: .maxFinite,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go("/products");
-                  },
-                  child: Text(
-                    "Continue Shopping",
-                    style: TextStyle(fontWeight: .bold),
-                  ),
-                ),
+              const SizedBox(height: 12),
+
+              ElevatedButton(
+                onPressed: () => context.go('/products'),
+                child: const Text('Continue Shopping'),
               ),
             ],
           ),
