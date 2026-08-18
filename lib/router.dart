@@ -6,6 +6,7 @@ import 'package:showave/features/auth/auth_state.dart';
 import 'package:showave/features/auth/login_screen.dart';
 import 'package:showave/features/cart/cart_screen.dart';
 import 'package:showave/features/orders/checkout_screen.dart';
+import 'package:showave/features/orders/order_history_screen.dart';
 import 'package:showave/features/orders/order_success_screen.dart';
 import 'package:showave/features/product/product_detail_screen.dart';
 import 'package:showave/features/product/products_screen.dart';
@@ -53,6 +54,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/checkout',
         builder: (context, state) => const CheckoutScreen(),
+      ),
+      GoRoute(
+        path: '/order_history',
+        builder: (context, state) => const OrderHistoryScreen(),
       ),
     ],
   );

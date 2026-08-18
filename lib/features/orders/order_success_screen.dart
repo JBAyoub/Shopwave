@@ -84,7 +84,7 @@ class OrderSuccessScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               OutlinedButton(
-                onPressed: () => context.push('/orders'),
+                onPressed: () => context.push('/order_history'),
                 child: const Text('View Order History'),
               ),
               const SizedBox(height: 12),
