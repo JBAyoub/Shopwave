@@ -1,8 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showave/core/constants.dart';
-import 'package:showave/features/auth/auth_provider.dart';
-import 'package:showave/features/auth/auth_state.dart';
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(
@@ -29,15 +28,26 @@ final dioProvider = Provider<Dio>((ref) {
 });
 
 final authenticatedDioProvider = Provider<Dio>((ref) {
-  final authState = ref.watch(authProvider);
   final dio = ref.watch(dioProvider);
-  final token = authState is AuthStateAuthenticated
-      ? authState.user.token
-      : null;
-  if (token != null) {
-    dio.options.headers['Authorization'] = 'Bearer $token';
-  } else {
-    dio.options.headers.remove('Authorization');
-  }
+
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString(AppConstants.tokenKey);
+
+        print('SAVED TOKEN: $token');
+
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+
+        print('AUTH HEADER: ${options.headers['Authorization']}');
+
+        handler.next(options);
+      },
+    ),
+  );
+
   return dio;
 });

@@ -20,6 +20,7 @@ class AuthNotifier extends Notifier<AuthState> {
     final prefs = await SharedPreferences.getInstance();
     final savedToken = prefs.getString(AppConstants.tokenKey);
     if (savedToken == null) return;
+
     try {
       final dio = ref.read(dioProvider);
       final response = await dio.get(
@@ -42,7 +43,7 @@ class AuthNotifier extends Notifier<AuthState> {
         data: {'email': email.trim(), 'password': password},
       );
       final user = User.fromJson(response.data as Map<String, dynamic>);
-      await _saveSession(user);
+      await _saveSession(user, response.data['token'] as String);
       state = AuthStateAuthenticated(user);
     } on DioException catch (e) {
       final data = e.response?.data;
@@ -73,9 +74,9 @@ class AuthNotifier extends Notifier<AuthState> {
     await prefs.remove("user_data");
   }
 
-  Future<void> _saveSession(User user) async {
+  Future<void> _saveSession(User user, String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(AppConstants.tokenKey, user.token);
+    await prefs.setString(AppConstants.tokenKey, token);
     await prefs.setString(AppConstants.userIdKey, user.id);
     await prefs.setString("user_data", jsonEncode(user.toJson()));
   }
