@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:showave/features/orders/order_provider.dart';
 import 'package:showave/features/orders/order_summary_provider.dart';
+import 'package:showave/models/order.dart';
 
 class CheckoutScreen extends ConsumerWidget {
   const CheckoutScreen({super.key});
@@ -13,7 +14,7 @@ class CheckoutScreen extends ConsumerWidget {
     final isLoading = orderState.isLoading;
     final isReady = ref.watch(isCheckoutReadyProvider);
 
-    ref.listen(orderProvider, (previous, next) {
+    ref.listen<AsyncValue<List<Order>>>(orderProvider, (previous, next) {
       if (previous?.isLoading == true && next.hasValue) {
         final orders = next.value ?? [];
         if (orders.isNotEmpty) {
