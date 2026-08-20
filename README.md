@@ -742,59 +742,7 @@ Examples include:
 
 ---
 
-# Backend
 
-The backend is implemented using Serverpod and PostgreSQL.
-
-The backend exposes custom REST routes for the Flutter client, including:
-
-```text
-POST /login
-POST /signup
-GET  /profile
-GET  /products
-GET  /products/:id
-GET  /orders
-POST /orders
-```
-
-The backend uses Serverpod's database layer and generated models.
-
-PostgreSQL stores:
-
-```text
-Users
-Products
-Orders
-Order items
-Serverpod authentication data
-```
-
-Serverpod authentication uses its email identity provider.
-
----
-
-# Backend database
-
-The project uses PostgreSQL running inside Docker.
-
-The development setup used during development maps:
-
-```text
-Host:      localhost
-Port:      5433
-Container: 5432
-```
-
-The backend connects to the PostgreSQL database through the Docker mapping.
-
-The Android emulator cannot use the host's `localhost` to reach the Flutter backend. The Flutter development configuration therefore uses:
-
-```text
-http://10.0.2.2:8082
-```
-
-where `10.0.2.2` represents the host machine from the Android emulator.
 
 ---
 
@@ -827,26 +775,7 @@ dart --version
 
 ---
 
-# Repository structure
-
-The intended full repository structure is:
-
-```text
-ShopWave/
-├── showave/
-│   ├── lib/
-│   ├── android/
-│   ├── ios/
-│   ├── pubspec.yaml
-│   └── README.md
-│
-└── shopwave_backend_server/
-    ├── lib/
-    ├── config/
-    ├── migrations/
-    ├── docker-compose.yml
-    └── pubspec.yaml
-```
+# Backend Link: https://github.com/JBAyoub/Shopwave_Backend/tree/main
 
 If the Flutter client and Serverpod backend are placed in separate repositories, adjust the paths accordingly.
 
