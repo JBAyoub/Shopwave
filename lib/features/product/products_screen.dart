@@ -26,7 +26,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
         actions: [
           IconButton(
             iconSize: 20,
-            onPressed: () {},
+            onPressed: () {
+              context.push("/profile");
+            },
             icon: const Icon(Icons.person_outline_sharp),
           ),
           Consumer(

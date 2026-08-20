@@ -10,6 +10,7 @@ import 'package:showave/features/orders/order_history_screen.dart';
 import 'package:showave/features/orders/order_success_screen.dart';
 import 'package:showave/features/product/product_detail_screen.dart';
 import 'package:showave/features/product/products_screen.dart';
+import 'package:showave/features/profile/profile_screen.dart';
 
 class _AuthChangeNotifier extends ChangeNotifier {
   _AuthChangeNotifier(Ref ref) {
@@ -58,6 +59,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/order_history',
         builder: (context, state) => const OrderHistoryScreen(),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
       ),
     ],
   );

@@ -9,9 +9,10 @@ class User {
     return User(
       name: json['name'] as String,
       email: json['email'] as String,
-      id: (json['id'] as int).toString(),
+      id: json['id'] as String,
     );
   }
+
   Map<String, dynamic> toJson() => {'id': id, 'name': name, 'email': email};
   @override
   bool operator ==(Object other) =>
