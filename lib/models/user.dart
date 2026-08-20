@@ -9,7 +9,7 @@ class User {
     return User(
       name: json['name'] as String,
       email: json['email'] as String,
-      id: json['id'] as String,
+      id: json['id'].toString(),
     );
   }
 
