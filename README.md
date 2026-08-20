@@ -1,3 +1,15 @@
+## Screenshots
+<img width="444" height="957" alt="9" src="https://github.com/user-attachments/assets/da1fccce-d8b1-47e0-bc4d-3ad4cc15f22c" />
+<img width="423" height="931" alt="8" src="https://github.com/user-attachments/assets/17f229ca-4352-4502-89d3-f01e92bf269a" />
+<img width="422" height="942" alt="7" src="https://github.com/user-attachments/assets/eef1530b-fb75-4c22-a5f8-6a469bf3e169" />
+<img width="434" height="952" alt="6" src="https://github.com/user-attachments/assets/46cb524b-3538-41cd-836d-eeff539b4539" />
+<img width="432" height="955" alt="5" src="https://github.com/user-attachments/assets/b8e3998a-d818-41a2-90d8-ffe0daedf631" />
+<img width="407" height="928" alt="4" src="https://github.com/user-attachments/assets/117e204a-3208-4dc7-b183-03bc7d0d8e4d" />
+<img width="427" height="938" alt="3" src="https://github.com/user-attachments/assets/e7a0d662-95f8-42dd-b7ba-c62f9224a222" />
+<img width="410" height="933" alt="2" src="https://github.com/user-attachments/assets/c448545b-3e8f-4b26-88f6-5e5377004e2d" />
+<img width="416" height="933" alt="1" src="https://github.com/user-attachments/assets/8eda2254-aa37-4137-8073-d35a34e77a48" />
+
+
 ## Project overview
 
 ShopWave consists of two applications:
